@@ -40,7 +40,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Install frontend dependencies and build assets
 RUN npm install && npm run build
-RUN php artisan config:clear \ && php artisan route:clear \ && php artisan view:clear
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 # Create storage symlink
 RUN php artisan storage:link || true
 # Fix permissions
