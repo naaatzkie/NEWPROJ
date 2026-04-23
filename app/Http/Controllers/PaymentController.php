@@ -22,6 +22,7 @@ class PaymentController extends Controller
 
     public function create(Booking $booking)
     {
+        $booking->load('payment');
         return view('payments.create', compact('booking'));
     }
 
@@ -36,13 +37,12 @@ class PaymentController extends Controller
 
         $data['booking_id'] = $booking->id;
 
-        $payment = Payment::create($data);
+        Payment::updateOrCreate(
+            ['booking_id' => $booking->id],
+            $data
+        );
 
-        if ($data['status'] === 'paid') {
-            $booking->update(['status' => 'confirmed']);
-            $payment->status = 'paid';
-            $payment->save();
-        }
+        $booking->update(['status' => $data['status'] === 'paid' ? 'confirmed' : $booking->status]);
 
         return redirect()->route('payments.index')->with('success', 'Payment recorded.');
     }

@@ -28,7 +28,7 @@
             </div>
 
             <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <p class="text-gray-700">Welcome — use the links above to manage services, bookings, and payments. Design is intentionally plain and simple.</p>
+                <p class="text-gray-700">Welcome — use the links above to manage services, bookings, and payments. </p>
             </div>
         </div>
     </div>

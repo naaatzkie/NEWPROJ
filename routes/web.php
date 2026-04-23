@@ -27,7 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::get('payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('payments/create/{booking}', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('payments/store/{booking}', [PaymentController::class, 'store'])->name('payments.store');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 require __DIR__.'/auth.php';
