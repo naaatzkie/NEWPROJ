@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Booking;
+use App\Models\Payment;
+use Illuminate\Http\Request;
+
+class PaymentController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        $payments = Payment::with('booking')->orderBy('created_at', 'desc')->get();
+        return view('payments.index', compact('payments'));
+    }
+
+    public function create(Booking $booking)
+    {
+        return view('payments.create', compact('booking'));
+    }
+
+    public function store(Request $request, Booking $booking)
+    {
+        $data = $request->validate([
+            'amount' => 'required|numeric',
+            'method' => 'nullable|string|max:255',
+            'status' => 'required|string|in:paid,unpaid',
+            'transaction_reference' => 'nullable|string|max:255',
+        ]);
+
+        $data['booking_id'] = $booking->id;
+
+        $payment = Payment::create($data);
+
+        if ($data['status'] === 'paid') {
+            $booking->update(['status' => 'confirmed']);
+            $payment->status = 'paid';
+            $payment->save();
+        }
+
+        return redirect()->route('payments.index')->with('success', 'Payment recorded.');
+    }
+}
