@@ -15,17 +15,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 # Enable Apache rewrite
 RUN a2enmod rewrite
-# Make Apache use port 10000 (Render default)
+# 1. Make Apache use port 10000 (Render default)
 RUN sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf && \
     sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:10000>/g' /etc/apache2/sites-available/000-default.conf
-# Set Laravel public as document root
-RUN sed -i 's/Listen 80/Listen 10000/g' /etc/apache2/ports.conf && sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:10000>/g' /etc/apache2/sites-available/000-default.conf
-# Allow .htaccess for Laravel
+# 2. CHANGE THIS LINE: Set Laravel public as document root
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+# 3. Allow .htaccess for Laravel (Your existing block is fine, just make sure it's complete)
 RUN printf '<Directory /var/www/html/public>\n\
-AllowOverride All\n\
-Require all granted\n\
+    AllowOverride All\n\
+    Require all granted\n\
 </Directory>\n' > /etc/apache2/conf-available/laravel.conf \
-&& a2enconf laravel
+    && a2enconf laravel
 # Install Node.js
 RUN apt-get update && apt-get install -y curl \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
