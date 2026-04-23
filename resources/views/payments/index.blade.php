@@ -38,9 +38,7 @@
                         </td>
                         <td class="px-4 py-2 text-center">
                             <a href="{{ route('payments.create', $booking) }}" class="px-2 py-1 bg-gray-800 text-white rounded">Record Payment</a>
-                            @if($booking->payment)
-                                <a href="{{ route('payments.index') }}" class="ml-2 text-sm text-gray-600">View Payments</a>
-                            @endif
+    
                         </td>
                     </tr>
                     @endforeach
