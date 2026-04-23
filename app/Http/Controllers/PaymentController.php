@@ -15,8 +15,9 @@ class PaymentController extends Controller
 
     public function index()
     {
-        $payments = Payment::with('booking')->orderBy('created_at', 'desc')->get();
-        return view('payments.index', compact('payments'));
+        // Show all bookings with their payment status on the payments page
+        $bookings = Booking::with('service', 'payment')->orderBy('scheduled_at', 'desc')->get();
+        return view('payments.index', compact('bookings'));
     }
 
     public function create(Booking $booking)
