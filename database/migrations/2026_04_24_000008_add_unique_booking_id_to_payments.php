@@ -15,9 +15,10 @@ return new class extends Migration
 
         // Remove duplicate payments, keeping only the latest per booking
         DB::statement('
-            DELETE p1 FROM payments p1
-            INNER JOIN payments p2
-            WHERE p1.booking_id = p2.booking_id AND p1.id < p2.id
+            DELETE FROM payments
+            WHERE id NOT IN (
+                SELECT MAX(id) FROM payments GROUP BY booking_id
+            )
         ');
 
         Schema::table('payments', function (Blueprint $table) {
