@@ -38,7 +38,6 @@
                         </td>
                         <td class="px-4 py-2 text-center">
                             <a href="{{ route('payments.create', $booking) }}" class="px-2 py-1 bg-gray-800 text-white rounded">Record Payment</a>
-    
                         </td>
                     </tr>
                     @endforeach
